@@ -1,0 +1,51 @@
+package com.FamilyApp.service;
+
+import com.FamilyApp.entity.Family;
+import com.FamilyApp.entity.FamilyMember;
+import com.FamilyApp.exception.InvalidInputException;
+import com.FamilyApp.repository.FamilyRepository;
+import com.FamilyApp.validator.FamilyValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+
+@Service
+public class FamilyService {
+
+    @Autowired
+    private FamilyRepository familyRepository;
+    @Autowired
+    private FamilyValidator familyValidator;
+
+    public RestTemplate restTemplate = new RestTemplate();
+
+    public int addFamily(Family family) throws InvalidInputException {
+        if (familyValidator.validateNrOfMembers(family) == 1) {
+            int familyId = familyRepository.save(family);
+
+            List<FamilyMember> familyMembers = family.getFamilyMembers();
+            familyMembers.forEach(familyMember -> familyMember.setFamilyId(familyId));
+            String url = "http://localhost:8082/familyMembers/";
+            restTemplate.postForLocation(url, familyMembers);
+            return familyId;
+        } else {
+            throw new InvalidInputException();
+        }
+    }
+
+    public Family getFamilyById(int id) {
+        ResponseEntity<List<FamilyMember>> responseEntity =
+                restTemplate.exchange("http://localhost:8082/familyMembers/" + id,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<FamilyMember>>() {
+                        });
+        List<FamilyMember> members = responseEntity.getBody();
+        Family selectedFamily = familyRepository.getById(id);
+        selectedFamily.setFamilyMembers(members);
+        return selectedFamily;
+    }
+}

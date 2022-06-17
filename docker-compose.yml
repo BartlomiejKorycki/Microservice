@@ -1,0 +1,23 @@
+version: '3'
+services:
+  familyapp:
+    build: ./FamilyApp
+    ports:
+      - "8081:8081"
+    depends_on:
+      - database
+  familymemberapp:
+    build: ./FamilyMemberApp
+    ports:
+      - "8082:8082"
+    depends_on:
+      - familyapp
+  database:
+    container_name: 'database'
+      image: mysql
+      environment:
+        MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        MYSQL_DATABASE: familydb, familymemberdb
+      ports:
+        - "3306:3306"
+      restart: always
