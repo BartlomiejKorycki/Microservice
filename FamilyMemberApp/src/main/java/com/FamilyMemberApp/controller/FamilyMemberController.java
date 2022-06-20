@@ -13,9 +13,9 @@ import java.util.List;
 @RequestMapping("/familyMembers")
 public class FamilyMemberController {
     @Autowired
-    FamilyMemberRepository familyMemberRepository;
+    private FamilyMemberRepository familyMemberRepository;
     @Autowired
-    FamilyMemberValidator familyMemberValidator;
+    private FamilyMemberValidator familyMemberValidator;
 
     @GetMapping("/{id}")
     public List<FamilyMember> searchFamilyMemberById(@PathVariable("id") int id) {

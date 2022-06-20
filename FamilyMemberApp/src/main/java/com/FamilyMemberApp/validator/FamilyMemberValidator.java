@@ -12,7 +12,7 @@ import java.util.List;
 public class FamilyMemberValidator {
 
     @Autowired
-    FamilyMemberRepository familyMemberRepository;
+    private FamilyMemberRepository familyMemberRepository;
 
     public String FamilyIdValidator(List<FamilyMember> familyMembers) throws IllegalArgumentException {
         FamilyMember familyMember = familyMembers.get(0);
