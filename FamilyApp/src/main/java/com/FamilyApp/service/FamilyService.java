@@ -3,6 +3,7 @@ package com.FamilyApp.service;
 import com.FamilyApp.entity.Family;
 import com.FamilyApp.entity.FamilyMember;
 import com.FamilyApp.exception.InvalidInputException;
+import com.FamilyApp.exception.WrongFamilyIdException;
 import com.FamilyApp.repository.FamilyRepository;
 import com.FamilyApp.validator.FamilyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +41,18 @@ public class FamilyService {
         }
     }
 
-    public Family getFamilyById(int id) {
+    public Family getFamilyById(int id) throws WrongFamilyIdException {
         ResponseEntity<List<FamilyMember>> responseEntity =
                 restTemplate.exchange(familyMemberAPI + id, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<FamilyMember>>() {
                         });
         List<FamilyMember> members = responseEntity.getBody();
-        Family selectedFamily = familyRepository.getById(id);
-        selectedFamily.setFamilyMembers(members);
-        return selectedFamily;
+        if (members.isEmpty()) {
+            throw new WrongFamilyIdException();
+        } else {
+            Family selectedFamily = familyRepository.getById(id);
+            selectedFamily.setFamilyMembers(members);
+            return selectedFamily;
+        }
     }
 }

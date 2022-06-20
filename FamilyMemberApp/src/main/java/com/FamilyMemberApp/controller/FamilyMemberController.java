@@ -1,7 +1,7 @@
 package com.FamilyMemberApp.controller;
 
 import com.FamilyMemberApp.entity.FamilyMember;
-import com.FamilyMemberApp.exception.IllegalArgumentException;
+import com.FamilyMemberApp.exception.MembersWithoutFamillyIdException;
 import com.FamilyMemberApp.repository.FamilyMemberRepository;
 import com.FamilyMemberApp.validator.FamilyMemberValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class FamilyMemberController {
     }
 
     @PostMapping("/")
-    public void createFamilyMember(@RequestBody List<FamilyMember> familyMembers) throws IllegalArgumentException {
+    public void createFamilyMember(@RequestBody List<FamilyMember> familyMembers) throws MembersWithoutFamillyIdException {
         familyMemberValidator.FamilyIdValidator(familyMembers);
     }
 }
