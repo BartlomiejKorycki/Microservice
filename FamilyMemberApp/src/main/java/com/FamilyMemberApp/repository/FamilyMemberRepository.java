@@ -24,12 +24,11 @@ public class FamilyMemberRepository {
         return familyMembers;
     }
 
-    public String save(List<FamilyMember> familyMembers) {
+    public void save(List<FamilyMember> familyMembers) {
         familyMembers.forEach(familyMember -> jdbcTemplate.update(
                 "INSERT INTO familyMember(familyId, familyName, givenName, age) VALUES(?, ?, ?, ?)",
                 familyMember.getFamilyId(), familyMember.getFamilyName(), familyMember.getGivenName(), familyMember.getAge()
         ));
         logger.info("Saved in FamilyMemberDB: " + familyMembers);
-        return "Family member added";
     }
 }

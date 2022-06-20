@@ -25,7 +25,7 @@ public class FamilyService {
     @Value("${url.familyMemberAPI}")
     private String familyMemberAPI;
 
-    public RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public int addFamily(Family family) throws InvalidInputException {
         if (familyValidator.validateNrOfMembers(family)) {
@@ -42,8 +42,8 @@ public class FamilyService {
 
     public Family getFamilyById(int id) {
         ResponseEntity<List<FamilyMember>> responseEntity =
-                restTemplate.exchange(familyMemberAPI + id,
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<FamilyMember>>() {
+                restTemplate.exchange(familyMemberAPI + id, HttpMethod.GET, null,
+                        new ParameterizedTypeReference<List<FamilyMember>>() {
                         });
         List<FamilyMember> members = responseEntity.getBody();
         Family selectedFamily = familyRepository.getById(id);

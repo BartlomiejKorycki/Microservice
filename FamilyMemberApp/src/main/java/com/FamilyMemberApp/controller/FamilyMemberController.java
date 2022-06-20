@@ -23,7 +23,7 @@ public class FamilyMemberController {
     }
 
     @PostMapping("/")
-    public String createFamilyMember(@RequestBody List<FamilyMember> familyMembers) throws IllegalArgumentException {
-        return familyMemberValidator.FamilyIdValidator(familyMembers);
+    public void createFamilyMember(@RequestBody List<FamilyMember> familyMembers) throws IllegalArgumentException {
+        familyMemberValidator.FamilyIdValidator(familyMembers);
     }
 }

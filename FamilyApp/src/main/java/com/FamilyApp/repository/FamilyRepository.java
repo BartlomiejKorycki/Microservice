@@ -12,7 +12,7 @@ import java.util.List;
 public class FamilyRepository {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     public List<Family> getAll() {
         return jdbcTemplate.query("SELECT * FROM family", BeanPropertyRowMapper.newInstance(Family.class));
@@ -28,7 +28,6 @@ public class FamilyRepository {
         jdbcTemplate.update("INSERT INTO family(familyName, nrOfAdults, nrOfChildren, nrOfInfants) VALUES(?, ?, ?, ?)",
                 family.getFamilyName(), family.getNrOfAdults(), family.getNrOfChildren(),
                 family.getNrOfInfants());
-        int familyId = getAll().size();
-        return familyId;
+        return getAll().size();
     }
 }

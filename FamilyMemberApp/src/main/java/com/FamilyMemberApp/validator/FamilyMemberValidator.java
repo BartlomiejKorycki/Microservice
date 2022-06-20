@@ -14,10 +14,10 @@ public class FamilyMemberValidator {
     @Autowired
     private FamilyMemberRepository familyMemberRepository;
 
-    public String FamilyIdValidator(List<FamilyMember> familyMembers) throws IllegalArgumentException {
+    public void FamilyIdValidator(List<FamilyMember> familyMembers) throws IllegalArgumentException {
         FamilyMember familyMember = familyMembers.get(0);
         if (familyMember.getFamilyId() != 0) {
-            return familyMemberRepository.save(familyMembers);
+            familyMemberRepository.save(familyMembers);
         } else {
             throw new IllegalArgumentException();
         }

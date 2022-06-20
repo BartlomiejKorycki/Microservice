@@ -5,7 +5,6 @@ import com.FamilyApp.exception.InvalidInputException;
 import com.FamilyApp.service.FamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/family")
 public class FamilyController {
