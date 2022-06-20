@@ -28,7 +28,7 @@ public class FamilyService {
     public RestTemplate restTemplate = new RestTemplate();
 
     public int addFamily(Family family) throws InvalidInputException {
-        if (familyValidator.validateNrOfMembers(family) == 1) {
+        if (familyValidator.validateNrOfMembers(family)) {
             int familyId = familyRepository.save(family);
 
             List<FamilyMember> familyMembers = family.getFamilyMembers();
