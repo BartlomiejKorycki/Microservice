@@ -8,7 +8,6 @@ import java.util.List;
 
 @Component
 public class FamilyValidator {
-
     public int validateNrOfMembers(Family family) {
         List<FamilyMember> familyMembers = family.getFamilyMembers();
         int infants = family.getNrOfInfants();
