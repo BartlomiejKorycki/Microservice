@@ -6,6 +6,7 @@ import com.FamilyApp.exception.InvalidInputException;
 import com.FamilyApp.repository.FamilyRepository;
 import com.FamilyApp.validator.FamilyValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ public class FamilyService {
     private FamilyRepository familyRepository;
     @Autowired
     private FamilyValidator familyValidator;
+    @Value("${url.familyMemberAPI}")
+    private String familyMemberAPI;
 
     public RestTemplate restTemplate = new RestTemplate();
 
@@ -30,8 +33,7 @@ public class FamilyService {
 
             List<FamilyMember> familyMembers = family.getFamilyMembers();
             familyMembers.forEach(familyMember -> familyMember.setFamilyId(familyId));
-            String url = "http://localhost:8082/familyMembers/";
-            restTemplate.postForLocation(url, familyMembers);
+            restTemplate.postForLocation(familyMemberAPI, familyMembers);
             return familyId;
         } else {
             throw new InvalidInputException();
@@ -40,7 +42,7 @@ public class FamilyService {
 
     public Family getFamilyById(int id) {
         ResponseEntity<List<FamilyMember>> responseEntity =
-                restTemplate.exchange("http://localhost:8082/familyMembers/" + id,
+                restTemplate.exchange(familyMemberAPI + id,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<FamilyMember>>() {
                         });
         List<FamilyMember> members = responseEntity.getBody();
